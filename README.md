@@ -85,9 +85,9 @@ Pour générer ces données, lancez le shell de l'interpréteur Django par le bi
 
 Dans la nouvelle interface, saisissez les commandes suivantes :
 
-import setupdata
-setupdata.generate_database_step1(nb_comm) 
-setupdata.generate_database_step2() 
+* import setupdata
+* setupdata.generate_database_step1(nb_comm) 
+* setupdata.generate_database_step2() 
 
 Où nb_comm est le nombre de commandes que vous souhaitez générer en base. L'application a été testée avec nb_comm=500.
 Par souci de commodité, les commandes générées ne disposent que d'un nombre limité de produits, sont toutes au statut Expédié et ont été passées entre Avril et Août 2018.
