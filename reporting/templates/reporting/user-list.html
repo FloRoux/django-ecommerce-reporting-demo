@@ -1,0 +1,94 @@
+{% include "reporting/header.html" %}
+{% include "reporting/navbar.html" %}
+{% load l10n %}
+
+    <div class="container">
+        <div class="columns">
+            <div class="column is-2">
+                <aside class="menu">
+                    <p class="menu-label">
+                        General
+                    </p>
+                    <ul class="menu-list">
+                        <li><a class="is-active">Accueil</a></li>
+                    </ul>
+                    <p class="menu-label">
+                        Administration
+                    </p>
+                    <ul class="menu-list">
+                        <li><a href="{% url 'order_list' %}">Commandes</a></li>
+                        <li><a href="{% url 'user_list' %}">Utilisateurs</a></li>
+                        <li><a href="{% url 'product_list' %}">Produits</a></li>
+                        <li><a href="{% url 'category_list' %}">Cat&eacute;gories</a></li>
+                    </ul>
+                </aside>
+            </div>
+            <div class="column is-10">
+                <nav class="breadcrumb" aria-label="breadcrumbs">
+                    <ul>
+                        <li><a href="{% url 'index' %}">Reporting</a></li>
+                        <li><a href="{% url 'index' %}">Accueil</a></li>
+                        <li><a href="{% url 'user_list' %}" aria-current="page">Utilisateurs</a></li>                        
+                    </ul>
+                </nav>
+                <section class="hero is-info welcome is-small">
+                    <div class="hero-body">
+                        <div class="container">
+                            <h1 class="title">
+                                Liste des utilisateurs
+                            </h1>                            
+                        </div>
+                    </div>
+                </section>
+               
+                <div class="columns">
+                    <div class="column is-12">                        
+                        <div class="card">
+                            <header class="card-header">
+                                <p class="card-header-title">
+                                    Liste des utilisateurs
+                                </p>
+                                <a href="#" class="card-header-icon" aria-label="more options">
+                                <span class="icon">
+                                  <i class="fa fa-angle-down" aria-hidden="true"></i>
+                                </span>
+                              </a>
+                            </header>
+                                <div class="content">
+                                    <table class="table is-fullwidth is-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Pr&eacute;nom</th>
+                                                <th>Nom</th>                                                
+                                                <th>E-mail</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% if user_list %}
+                                                {% for user in user_list %}
+                                                <tr>
+                                                    <td><a href="{% url 'user' user.id %}">{{ user.user_first_name }}</a></td>
+                                                    <td><a href="{% url 'user' user.id %}">{{ user.user_last_name }}</a></td>
+                                                    <td>{{ user.user_email }}</td>   
+                                                </tr>
+                                                {% endfor %}                                                                                              
+                                            {% endif %}
+                                            
+                                               
+                                        </tbody>
+                                    </table>
+                                
+                            </div>
+                            <footer class="card-footer">
+                                <a href="{% url 'index' %}" class="card-footer-item">Retourner &agrave; l'accueil</a>
+                            </footer>
+                        </div>
+                    </div>                    
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+{% include "reporting/footer.html" %}
+

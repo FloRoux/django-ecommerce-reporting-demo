@@ -1,0 +1,169 @@
+<script type="text/javascript">
+        
+    /* * Container & Parameter References * */
+    /* * Chart 1 - Ensemble des commandes * */
+    var chart1_plotly_container = document.getElementById('plotly-global-sales');
+    var chart1_date_start_container = document.getElementById('global_datepicker_start');
+    var chart1_date_end_container = document.getElementById('global_datepicker_end');
+    /* * Chart 2 - Produits par categorie * */
+    var chart2_plotly_container = document.getElementById('plotly-cat-prods');
+    /* * Chart 3 - Ventes par categorie * */    
+    var chart3_plotly_container = document.getElementById('plotly-sales');
+    var chart3_date_start_container = document.getElementById('sales_datepicker_start');
+    var chart3_date_end_container = document.getElementById('sales_datepicker_end');
+    var chart3_switch_orders_container = document.getElementById('btn-switch-orders');
+    var chart3_switch_sales_container = document.getElementById('btn-switch-sales');
+    var chart3_current_mode = 'sales';
+
+    /* * Utilities * */
+    
+    var getDateArray = function(start, end) {
+            var
+              arr = new Array(),
+              dt = new Date(start);
+            while (dt <= end) {
+              arr.push(new Date(dt));
+              dt.setDate(dt.getDate() + 1);
+            }
+            return arr;
+    }   
+    
+    /* * Plotly Chart #1 - Chart global orders * */    
+    function chart1_load_plotly(date_start,date_end,dataloader) {
+        
+        var data_x = Array();
+        var data_y = Array();
+        
+        var startDate = new Date(date_start);
+        var endDate = new Date(date_end);  
+        var dateArr = getDateArray(startDate, endDate);
+        
+        for (var i in dateArr) {
+  
+            var date_today = dateArr[i].getFullYear() + '-' + ('0' +(dateArr[i].getMonth()+1)).slice(-2) + '-' + ('0' +(dateArr[i].getDate())).slice(-2);
+            data_x.push(date_today);
+            var current_total = 0;
+            
+            var data_array = dataloader.product_data;
+            var valid_data = data_array.filter(function (el) {
+                return el.order_date == date_today; 
+            })
+            
+            for (var j in valid_data) {
+                current_total += valid_data[j].order_product_total;
+                current_total += valid_data[j].order_shipping_cost;            
+            }
+            data_y.push(current_total);
+        
+        }
+        
+        var color_line = '#17BECF';        
+        
+        var data = [{
+            x: data_x,
+            y: data_y,
+            type: 'scatter',
+            line: { color: color_line }
+        }];   
+    
+        Plotly.newPlot(chart1_plotly_container,data);      
+        
+    }
+    
+    /* * Init Chart #1 * */ 
+    chart1_load_plotly('{% now 'Y' %}-{% now 'm' %}-01','{% now 'Y-m-d' %}',dataloader_global_orders);
+    
+    /* * Plotly Chart #2 - Nb produits par categorie * */
+    
+    function chart2_load_plotly(dataloader) {
+        
+        var data_x = Array();
+        var data_y = Array();
+       
+        var data_array = dataloader.product_data;
+        
+        for (var i in data_array) {
+           
+            data_x.push(data_array[i].category)
+            data_y.push(data_array[i].count);
+        
+        }    
+        
+        var data = [{
+            labels: data_x,
+            values: data_y,
+            type: 'pie',            
+        }];
+    
+        Plotly.newPlot(chart2_plotly_container,data);     
+        
+    }
+    
+    /* * Init Chart #2 * */
+    chart2_load_plotly(dataloader_cat_prod);    
+    
+    function chart3_load_plotly(date_start,date_end,dataloader,view_mode,sub_loader) {
+        
+        var data_x = Array();
+        var data_y = Array();
+        var subloader_data = sub_loader.product_data;
+        for (var id in subloader_data) {
+            data_x.push(subloader_data[id].category);
+            data_y.push(0);
+        }
+        
+        
+
+        var data_array = dataloader.product_data;
+        var valid_data = data_array.filter(function (el) {
+            return ((el.order_date <= date_end) && (el.order_date >= date_start)); 
+        })
+            
+        for (var j in valid_data) {
+            for (var key=0;key < data_x.length;key++) {                
+                if (data_x[key] == valid_data[j].order_category) {
+                    if(view_mode == 'orders') {
+                        data_y[key] += valid_data[j].order_nb_items;
+                    } else if (view_mode == 'sales') {
+                        data_y[key] += valid_data[j].order_product_total;
+                    }
+                    
+                }                
+            }       
+        }  
+                
+        var data = [{
+            x: data_x,
+            y: data_y,
+            type: 'bar'            
+        }];       
+    
+        Plotly.newPlot(chart3_plotly_container,data);      
+        
+    }
+    
+    /* * Init Chart #3 * */
+    chart3_load_plotly('{% now 'Y' %}-{% now 'm' %}-01','{% now 'Y-m-d' %}',dataloader_global_sales,chart3_current_mode,subloader_categories);
+    
+    
+    function chart3_plotly_switch_mode(date_start,date_end,dataloader,new_mode,subloader) {
+        
+        if(new_mode == 'sales') {            
+            chart3_switch_sales_container.classList.add("is-selected");
+            chart3_switch_sales_container.classList.add("is-info");
+            chart3_switch_orders_container.classList.remove("is-selected");
+            chart3_switch_orders_container.classList.remove("is-info");
+            chart3_current_mode = 'sales';
+        } else if(new_mode == 'orders') {
+            chart3_switch_orders_container.classList.add("is-selected");
+            chart3_switch_orders_container.classList.add("is-info");
+            chart3_switch_sales_container.classList.remove("is-selected");
+            chart3_switch_sales_container.classList.remove("is-info");
+            chart3_current_mode = 'orders';
+        }
+        
+        chart3_load_plotly(date_start,date_end,dataloader,new_mode,subloader);
+        
+    }
+    
+</script>

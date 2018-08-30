@@ -1,0 +1,64 @@
+{% load mult %}
+{% load l10n %}
+
+<script type="text/javascript">
+    
+    var dataloader_cat_prod = {
+        product_data: [
+        {% if category_count %}
+            {% for cat_entry in category_count %}
+            {
+                category: "{{ cat_entry.category_label }}",
+                count: {{ cat_entry.nb_prod }}
+            }
+            {% if not forloop.last %},{% endif %}
+            {% endfor %}                                                                                              
+        {% endif %} 
+        ]};
+    
+    var dataloader_global_orders = {
+        product_data: [
+        {% if orders %}
+            {% for order in orders %}
+            {
+                order_id: {{ order.id }},
+                order_date: "{{ order.order_date|date:"Y-m-d" }}",
+                order_product_total: {% localize off %}{{ order.order_total_products }},
+                order_shipping_cost: {{ order.order_shipping.shipping_cost }}{% endlocalize %}
+            }
+            {% if not forloop.last %},{% endif %}
+            {% endfor %}                                                                                              
+        {% endif %} 
+        ]};
+    
+    var dataloader_global_sales = {
+        product_data: [
+        {% if sales %}
+            {% for order_cart in sales %}
+            {
+                order_id: {{ order_cart.cart_order.id }},
+                order_date: "{{ order_cart.cart_order.order_date|date:"Y-m-d" }}",
+                order_product_total: {% localize off %}{{ order_cart.cart_quantity|mult:order_cart.cart_product.product_unit_price }}{% endlocalize %},
+                order_nb_items: {{ order_cart.cart_quantity }},
+                order_category: "{{ order_cart.cart_product.product_category.category_label }}"
+            }
+            {% if not forloop.last %},{% endif %}
+            {% endfor %}                                                                                              
+        {% endif %} 
+        ]};
+    
+    var subloader_categories = {
+        product_data: [
+        {% if category_count %}
+            {% for cat_entry in category_count %}
+            {
+                category: "{{ cat_entry.category_label }}",                
+            }
+            {% if not forloop.last %},{% endif %}
+            {% endfor %}                                                                                              
+        {% endif %} 
+        ]};
+        
+    
+    
+</script>

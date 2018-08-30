@@ -1,0 +1,21 @@
+{% load mult %}
+{% load l10n %}
+
+<script type="text/javascript">
+    
+    var dataloader = {
+        product_data: [
+        {% if orders %}
+            {% for order_cart in orders %}
+            {
+                order_id: {{ order_cart.cart_order.id }},
+                order_date: "{{ order_cart.cart_order.order_date|date:"Y-m-d" }}",
+                order_product_total: {% localize off %}{{ order_cart.cart_quantity|mult:order_cart.cart_product.product_unit_price }}{% endlocalize %},
+                order_nb_items: {{ order_cart.cart_quantity }}
+            }
+            {% if not forloop.last %},{% endif %}
+            {% endfor %}                                                                                              
+        {% endif %} 
+        ]};
+    
+</script>

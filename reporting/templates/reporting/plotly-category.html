@@ -1,0 +1,94 @@
+<script type="text/javascript">
+    
+    var plotly_container = document.getElementById('plotly-cat-sales');
+    var date_start_container = document.getElementById('cat_datepicker_start');
+    var date_end_container = document.getElementById('cat_datepicker_end');
+    var switch_orders_container = document.getElementById('btn-switch-orders');
+    var switch_sales_container = document.getElementById('btn-switch-sales'); 
+    
+    var current_mode = 'sales';
+    
+    var getDateArray = function(start, end) {
+            var
+              arr = new Array(),
+              dt = new Date(start);
+            while (dt <= end) {
+              arr.push(new Date(dt));
+              dt.setDate(dt.getDate() + 1);
+            }
+            return arr;
+    }   
+    
+    function load_plotly(date_start,date_end,dataloader,view_mode) {
+        
+        var data_x = Array();
+        var data_y = Array();
+        
+        var startDate = new Date(date_start);
+        var endDate = new Date(date_end);  
+        var dateArr = getDateArray(startDate, endDate);
+        
+        for (var i in dateArr) {
+  
+            var date_today = dateArr[i].getFullYear() + '-' + ('0' +(dateArr[i].getMonth()+1)).slice(-2) + '-' + ('0' +(dateArr[i].getDate())).slice(-2);
+            data_x.push(date_today);
+            var current_total = 0;
+            
+            var data_array = dataloader.product_data;
+            var valid_data = data_array.filter(function (el) {
+                return el.order_date == date_today; 
+            })
+            
+            for (var j in valid_data) {
+                if(view_mode == 'sales') {
+                    current_total += valid_data[j].order_product_total;
+                } else if(view_mode == 'orders') {
+                    current_total += valid_data[j].order_nb_items;
+                }                
+            }
+            data_y.push(current_total);
+        
+        }
+        
+        if(view_mode == 'orders') {
+            var color_line = '#CC9900';
+        } else if(view_mode == 'sales') {
+            var color_line = '#17BECF'
+        }
+        
+        var data = [{
+            x: data_x,
+            y: data_y,
+            type: 'scatter',
+            line: { color: color_line }
+        }];        
+    
+        Plotly.newPlot(plotly_container,data);      
+        
+    }
+    
+    function plotly_switch_mode(date_start,date_end,dataloader,new_mode) {
+        
+        if(new_mode == 'sales') {            
+            switch_sales_container.classList.add("is-selected");
+            switch_sales_container.classList.add("is-info");
+            switch_orders_container.classList.remove("is-selected");
+            switch_orders_container.classList.remove("is-info");
+            current_mode = 'sales';
+        } else if(new_mode == 'orders') {
+            switch_orders_container.classList.add("is-selected");
+            switch_orders_container.classList.add("is-info");
+            switch_sales_container.classList.remove("is-selected");
+            switch_sales_container.classList.remove("is-info");
+            current_mode = 'orders';
+        }
+        
+        load_plotly(date_start,date_end,dataloader,new_mode);
+        
+    }
+    
+     
+    
+    data_test = load_plotly('{% now 'Y' %}-{% now 'm' %}-01','{% now 'Y-m-d' %}',dataloader,'sales');    
+    
+</script>
