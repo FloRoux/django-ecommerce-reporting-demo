@@ -8,6 +8,7 @@ V 0.1b - Une application de démonstration de visualisation de statistiques e-co
 3. Installation
 4. Configuration 
 5. Données de démo
+6. Licence et notices de copyright
 
 ## Présentation générale
 
@@ -30,12 +31,15 @@ Aucun autre prérequis n'est nécessaire.
 L'application a été développée sous Django 2.1 mais n'importe quelle version >= 2.0 pourra convenir.
 Pour installer la dernière version de Django, placez-vous dans votre répertoire de travail à partir d'un terminal et exécutez la commande :
 
+```sh
 pip install Django
+```
 
 Par ailleurs, Django supporte nativement l'interconnexion avec plusieurs Systèmes de Gestion de Base de Données répandus mais ce n'est pas le cas avec SQL Server. Pour utiliser une base de données SQL server, il est nécessaire d'installer la librairie django-pyodbc-azure :
 
+```sh
 pip install django-pyodbc-azure
-
+```
 ### Installation de l'application
 
 Pour installer l'application, téléchargez l'archive .zip sur le repository actuel et décompressez son contenu dans le répertoire de travail que vous comptez utiliser.
@@ -64,7 +68,11 @@ Afin de créer les structures de données de l'application, il est nécessaire d
 Django propose une interface d'administration par défaut pour les applications déployées sous ce framework.
 Vous avez la possibilité de créer un compte d'administrateur qui vous permettra d'y avoir accès.
 
-En ligne de commande, saisissez la commande python manage.py createsuperuser
+En ligne de commande, saisissez la commande 
+
+```sh
+python manage.py createsuperuser
+```
 
 ## Données de démo
 
@@ -85,12 +93,20 @@ Pour générer ces données, lancez le shell de l'interpréteur Django par le bi
 
 Dans la nouvelle interface, saisissez les commandes suivantes :
 
-* import setupdata
-* setupdata.generate_database_step1(nb_comm) 
-* setupdata.generate_database_step2() 
-
+```sh
+import setupdata
+setupdata.generate_database_step1(nb_comm) 
+setupdata.generate_database_step2() 
+```
 Où nb_comm est le nombre de commandes que vous souhaitez générer en base. L'application a été testée avec nb_comm=500.
 Par souci de commodité, les commandes générées ne disposent que d'un nombre limité de produits, sont toutes au statut Expédié et ont été passées entre Avril et Août 2018.
+
+## Licence et notices de copyright 
+
+Cette application est Copyright 2018 Florent Roux. Le code est publié sous [licence MIT](https://github.com/FloRoux/django-ecommerce-reporting-demo/blob/master/LICENSE).
+
+Le framework CSS [bulma](https://github.com/jgthms/bulma/) est Copyright (c) 2018 Jeremy Thomas
+La librairie [Plotly.js](https://github.com/plotly/plotly.js/) est Copyright (c) 2018 Plotly, Inc
 
 
 
