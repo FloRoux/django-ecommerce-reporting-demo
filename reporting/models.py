@@ -14,6 +14,7 @@ class OrderCartManager(models.Manager):
             sales = self.values('cart_product__product_category__id','cart_product__product_category__category_label').annotate(cat_sales=Sum('cart_quantity')).order_by('-cat_sales')
         return sales
     
+    # Groupe le total de ventes par produit
     def get_sales_per_product(self, get_mode):
         sales = ''
         if (get_mode == 'euro'):
@@ -26,6 +27,7 @@ class User(models.Model):
     user_first_name = models.CharField(max_length=255)
     user_last_name = models.CharField(max_length=255)
     user_email = models.CharField(max_length=255)
+    # Retourne les commandes associées au client
     def get_orders(self):
         orders = Order.objects.filter(order_customer=self).order_by("-order_date")
         return orders
@@ -49,9 +51,11 @@ class Category(models.Model):
     category_label = models.CharField(max_length=255)
     class Meta:
         verbose_name_plural = "Categories"
+    # Retourne les produits associés à la catégorie
     def get_products(self):
         products = Product.objects.filter(product_category=self).order_by("pk")
         return products
+    # Retourne les ventes associées à la catégorie
     def get_product_sales(self):
         sales = OrderCart.objects.filter(cart_product__product_category=self).order_by("-cart_order__order_date")
         return sales
@@ -63,6 +67,7 @@ class Product(models.Model):
     product_description = models.TextField()
     product_unit_price = models.FloatField()   
     product_category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    # Retourne les ventes contenant ce produit
     def get_orders(self):
         orders = OrderCart.objects.filter(cart_product=self).order_by("-cart_order__order_date")
         return orders
@@ -75,6 +80,7 @@ class Order(models.Model):
     order_total_products = models.FloatField()
     order_shipping = models.ForeignKey(Shipping, on_delete=models.CASCADE)
     order_status = models.ForeignKey(OrderStatus, on_delete=models.CASCADE)
+    # Retourne les produits contenus dans la commande
     def get_products(self):
         products = OrderCart.objects.filter(cart_order=self).values('cart_product','cart_quantity','cart_product__product_unit_price','cart_product__product_name')
         return products

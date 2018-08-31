@@ -33,7 +33,10 @@
                         <li><a href="{% url 'order' order.id %}" aria-current="page">Commande n&deg;{{ order.id }}</a></li>
                     </ul>
                 </nav>
-                <section class="hero is-info welcome is-small">
+                
+                <div class="columns">
+                    <div class="column is-12">
+                        <section class="hero is-info welcome is-small">
                     <div class="hero-body">
                         <div class="container">
                             <h1 class="title">
@@ -73,8 +76,6 @@
                         </div>
                     </div>
                 </section>
-                <div class="columns">
-                    <div class="column is-12">                        
                         <div class="card events-card">
                             <header class="card-header">
                                 <p class="card-header-title">

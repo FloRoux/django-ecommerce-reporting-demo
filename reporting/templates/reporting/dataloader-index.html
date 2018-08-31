@@ -3,6 +3,7 @@
 
 <script type="text/javascript">
     
+    //Chargement des données - Nombre de produits par catégorie
     var dataloader_cat_prod = {
         product_data: [
         {% if category_count %}
@@ -16,6 +17,7 @@
         {% endif %} 
         ]};
     
+    //Chargement des données - Ensemble des commandes
     var dataloader_global_orders = {
         product_data: [
         {% if orders %}
@@ -31,6 +33,7 @@
         {% endif %} 
         ]};
     
+    //Chargement des données - Ensemble des ventes
     var dataloader_global_sales = {
         product_data: [
         {% if sales %}
@@ -47,6 +50,7 @@
         {% endif %} 
         ]};
     
+    //Chargement des données - Liste des catégories
     var subloader_categories = {
         product_data: [
         {% if category_count %}

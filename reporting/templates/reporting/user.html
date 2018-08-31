@@ -31,23 +31,22 @@
                         <li><a href="{% url 'user_list' %}">Utilisateurs</a></li>
                         <li><a href="{% url 'user' user.id %}" aria-current="page">{{ user.user_first_name }} {{ user.user_last_name }}</a></li>
                     </ul>
-                </nav>
-                <section class="hero is-info welcome is-small">
-                    <div class="hero-body">
-                        <div class="container">
-                            <h1 class="title">
-                                {{ user.user_first_name }} {{ user.user_last_name }}
-                            </h1>
-                            <h2 class="subtitle">
-                                <a href="mailto:{{ user.user_email }}">{{ user.user_email }}</a>
-                            </h2>
-                        </div>
-                    </div>
-                </section>
+                </nav>                
                 
                 <div class="columns">
-                    <div class="column is-12"> 
-                                      
+                    <div class="column is-12">
+                        <section class="hero is-info welcome is-small rep-header">
+                            <div class="hero-body">
+                                <div class="container">
+                                    <h1 class="title">
+                                        {{ user.user_first_name }} {{ user.user_last_name }}
+                                    </h1>
+                                    <h2 class="subtitle">
+                                        <a href="mailto:{{ user.user_email }}">{{ user.user_email }}</a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </section>                                      
                         <div class="card events-card">
                             <header class="card-header">
                                 <p class="card-header-title">

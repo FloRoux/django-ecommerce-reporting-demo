@@ -27,23 +27,28 @@ def index(request):
 
 def product(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
+    # Commandes associées au produit
     orders = product.get_orders()
     return render(request, 'reporting/product.html', {'product': product, 'orders' : orders})
 
 def order(request, order_id):
     order = get_object_or_404(Order, pk=order_id)
+    # Produits contenus dans la commande
     products = order.get_products()
     products_count = products.count()
     return render(request, 'reporting/order.html', {'order': order, 'products' : products, 'products_count': products_count})
 
 def category(request, category_id):
     category = get_object_or_404(Category, pk=category_id)
+    # Produits appartenant à la catégorie
     products = category.get_products()
+    # Ventes associées à la catégorie
     sales = category.get_product_sales()
     return render(request, 'reporting/category.html', {'category': category, 'products' : products, 'sales': sales})
 
 def user(request, user_id):
     user = get_object_or_404(User, pk=user_id)
+    # Commandes passées par le client
     orders = user.get_orders()
     return render(request, 'reporting/user.html', {'user': user, 'orders' : orders})
 
