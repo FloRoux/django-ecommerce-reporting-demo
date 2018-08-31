@@ -16,8 +16,6 @@ Cette application est un prototype de démonstration visant à présenter un out
 Elle a été développée sous Python avec le Framework Django (version 2.1), sur une base de données SQL Server.
 L'application utilise le framework CSS Bulma et la bibliothèque Plotly.js.
 
-La version actuelle 
-
 ## Prérequis 
 
 L'installation nécessite d'avoir Python version >= 3.5 installé sur son système.
@@ -53,7 +51,7 @@ Django repose sur un ORM faisant abstraction du système de base de données uti
 Vous pouvez ainsi configurer l'application pour fonctionner avec votre propre système de bases de données.
 
 Pour cela, il vous suffit de modifier le fichier reporting_demo/settings.py, section DATABASES.
-Pour tout renseignement complémentaire, consultez [ce lien] (https://docs.djangoproject.com/fr/2.1/topics/install/#database-installation)
+Pour tout renseignement complémentaire, consultez [ce lien](https://docs.djangoproject.com/fr/2.1/topics/install/#database-installation)
 Les informations présaisies sont basées sur une utilisation de SQL Server.
 
 ### Migrations d'initialisations
